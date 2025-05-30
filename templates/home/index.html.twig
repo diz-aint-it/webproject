@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to Vintage Books{% endblock %}
+
+{% block body %}
+    <div class="hero bg-light py-5 mb-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="display-4">Discover Rare & Vintage Books</h1>
+                    <p class="lead">Explore our collection of carefully curated vintage and rare books from around the world.</p>
+                    <a href="{{ path('app_products') }}" class="btn btn-primary btn-lg">Browse Collection</a>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ asset('images/hero-image.jpg') }}" alt="Vintage Books" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="mb-5">
+            <h2 class="mb-4">Featured Books</h2>
+            <div class="row">
+                {% for product in featuredProducts|slice(0, 4) %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                                <p class="card-text text-muted">By {{ product.author }}</p>
+                                <p class="card-text">${{ product.price|number_format(2) }}</p>
+                                <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="mb-4">Recently Added</h2>
+            <div class="row">
+                {% for product in recentProducts %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                                <p class="card-text text-muted">By {{ product.author }}</p>
+                                <p class="card-text">${{ product.price|number_format(2) }}</p>
+                                <a href="{{ path('app_product_show', {id: product.id}) }}" class="btn btn-outline-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-body">
+                            <i class="bi bi-book fs-1 text-primary mb-3"></i>
+                            <h3>Rare Collection</h3>
+                            <p>Discover our carefully curated selection of rare and vintage books.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-body">
+                            <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
+                            <h3>Authenticity</h3>
+                            <p>Every book is verified for authenticity and condition.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-body">
+                            <i class="bi bi-truck fs-1 text-primary mb-3"></i>
+                            <h3>Secure Shipping</h3>
+                            <p>Safe and secure worldwide shipping for your precious books.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %} 
