@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import Products{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Import Products from CSV</h1>
+    <form method="post" enctype="multipart/form-data" class="card p-4 mb-4 shadow">
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">CSV File</label>
+            <input type="file" name="csv_file" id="csv_file" class="form-control" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Import</button>
+        <a href="{{ path('admin_products') }}" class="btn btn-outline-secondary ms-2">Cancel</a>
+    </form>
+    <div class="alert alert-info mt-3">
+        <strong>CSV Format:</strong><br>
+        <code>title,author,price,stock,isbn,publicationYear,bookCondition,description</code><br>
+        Each row should represent a product. Existing products with the same ISBN will be updated.
+    </div>
+</div>
+{% endblock %} 

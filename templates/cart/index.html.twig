@@ -79,9 +79,11 @@
                     <a href="{{ path('app_products') }}" class="btn btn-outline-secondary me-2">
                         <i class="bi bi-arrow-left"></i> Continue Shopping
                     </a>
-                    <a href="{{ path('app_checkout') }}" class="btn btn-primary">
-                        <i class="bi bi-credit-card"></i> Proceed to Checkout
-                    </a>
+                    <form action="{{ path('app_cart_purchase') }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure you want to purchase these items?');">
+                            <i class="bi bi-cart-check"></i> Purchase
+                        </button>
+                    </form>
                 </div>
             </div>
         {% else %}

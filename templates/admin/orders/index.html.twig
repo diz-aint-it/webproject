@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Orders{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Manage Orders</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.user.fullName }}</td>
+                    <td>{{ order.orderDate|date('Y-m-d H:i') }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.total|number_format(2) }}</td>
+                    <td>
+                        <a href="{{ path('admin_order_edit', {id: order.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ path('admin_order_show', {id: order.id}) }}" class="btn btn-info btn-sm">View</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6">No orders found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'app_products')]
-    public function index(ProductRepository $productRepository, Request $request): Response
+    public function index(ProductRepository $productRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $query = $request->query->get('q');
         $category = $request->query->get('category');
@@ -33,38 +34,24 @@ class ProductController extends AbstractController
             $products = $productRepository->findAll();
         }
 
+        // Fetch all categories
+        $categories = $entityManager->getRepository(\App\Entity\Category::class)->findAll();
+
         return $this->render('product/index.html.twig', [
             'products' => $products,
+            'categories' => $categories,
         ]);
     }
 
     #[Route('/{id}', name: 'app_product_show')]
-    public function show(Product $product): Response
+    public function show(int $id, ProductRepository $productRepository): Response
     {
+        $product = $productRepository->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('Product not found');
+        }
         return $this->render('product/show.html.twig', [
             'product' => $product,
-        ]);
-    }
-
-    #[Route('/admin/new', name: 'app_product_new')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($product);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Product created successfully.');
-            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
-        }
-
-        return $this->render('product/new.html.twig', [
-            'product' => $product,
-            'form' => $form,
         ]);
     }
 
@@ -99,5 +86,31 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('app_products');
+    }
+
+    #[Route('/{id}/subscribe-alert', name: 'app_product_subscribe_alert', methods: ['POST'])]
+    public function subscribeAlert(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
+    {
+        $product = $productRepository->find($id);
+        $user = $this->getUser();
+        if ($product && $user) {
+            $product->addAlertSubscriber($user);
+            $entityManager->flush();
+            $this->addFlash('success', 'You will be notified when this book is back in stock.');
+        }
+        return $this->redirectToRoute('app_product_show', ['id' => $id]);
+    }
+
+    #[Route('/{id}/unsubscribe-alert', name: 'app_product_unsubscribe_alert', methods: ['POST'])]
+    public function unsubscribeAlert(int $id, ProductRepository $productRepository, EntityManagerInterface $entityManager): Response
+    {
+        $product = $productRepository->find($id);
+        $user = $this->getUser();
+        if ($product && $user) {
+            $product->removeAlertSubscriber($user);
+            $entityManager->flush();
+            $this->addFlash('info', 'You will no longer receive alerts for this book.');
+        }
+        return $this->redirectToRoute('app_product_show', ['id' => $id]);
     }
 } 

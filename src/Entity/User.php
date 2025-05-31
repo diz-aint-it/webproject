@@ -41,9 +41,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private Collection $orders;
 
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'alertSubscribers')]
+    private Collection $alertedProducts;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->alertedProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +153,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($order->getUser() === $this) {
                 $order->setUser(null);
             }
+        }
+        return $this;
+    }
+
+    public function getAlertedProducts(): Collection
+    {
+        return $this->alertedProducts;
+    }
+
+    public function addAlertedProduct(Product $product): static
+    {
+        if (!$this->alertedProducts->contains($product)) {
+            $this->alertedProducts[] = $product;
+            $product->addAlertSubscriber($this);
+        }
+        return $this;
+    }
+
+    public function removeAlertedProduct(Product $product): static
+    {
+        if ($this->alertedProducts->removeElement($product)) {
+            $product->removeAlertSubscriber($this);
         }
         return $this;
     }

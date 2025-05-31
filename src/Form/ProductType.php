@@ -61,7 +61,7 @@ class ProductType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label_attr' => ['class' => 'form-label']
             ])
-            ->add('condition', TextType::class, [
+            ->add('bookCondition', TextType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label_attr' => ['class' => 'form-label']
             ])

@@ -30,6 +30,21 @@ class OrderItem
     #[Assert\Positive]
     private ?float $price = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $shippingName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $shippingEmail = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $shippingPhone = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shippingState = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $notes = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,5 +97,60 @@ class OrderItem
     public function getSubtotal(): float
     {
         return $this->quantity * $this->price;
+    }
+
+    public function getShippingName(): ?string
+    {
+        return $this->shippingName;
+    }
+
+    public function setShippingName(?string $shippingName): static
+    {
+        $this->shippingName = $shippingName;
+        return $this;
+    }
+
+    public function getShippingEmail(): ?string
+    {
+        return $this->shippingEmail;
+    }
+
+    public function setShippingEmail(?string $shippingEmail): static
+    {
+        $this->shippingEmail = $shippingEmail;
+        return $this;
+    }
+
+    public function getShippingPhone(): ?string
+    {
+        return $this->shippingPhone;
+    }
+
+    public function setShippingPhone(?string $shippingPhone): static
+    {
+        $this->shippingPhone = $shippingPhone;
+        return $this;
+    }
+
+    public function getShippingState(): ?string
+    {
+        return $this->shippingState;
+    }
+
+    public function setShippingState(?string $shippingState): static
+    {
+        $this->shippingState = $shippingState;
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): static
+    {
+        $this->notes = $notes;
+        return $this;
     }
 } 

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Products{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Manage Products</h1>
+    <form method="post" action="{{ path('admin_product_bulk_delete') }}" id="bulk-delete-form">
+        <div class="mb-3 d-flex align-items-center gap-2">
+            <a href="{{ path('admin_product_new') }}" class="btn btn-success">Add New Product</a>
+            <a href="{{ path('admin_product_import') }}" class="btn btn-warning">Import</a>
+            <a href="{{ path('admin_product_export') }}" class="btn btn-primary">Export</a>
+            <button type="submit" class="btn btn-danger ms-2" onclick="return confirm('Are you sure you want to delete the selected books?');">Delete Selected</button>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td><input type="checkbox" name="ids[]" value="{{ product.id }}"></td>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.title }}</td>
+                        <td>{{ product.author }}</td>
+                        <td>{{ product.price|number_format(2) }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>
+                            {% if product.image %}
+                                <img src="/uploads/products/{{ product.image }}" alt="{{ product.title }}" style="max-width: 60px; max-height: 60px;">
+                            {% else %}
+                                <span class="text-muted">No image</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- Actions moved to details view -->
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6">No products found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+<script>
+    document.getElementById('select-all').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('input[name="ids[]"]');
+        for (const cb of checkboxes) {
+            cb.checked = this.checked;
+        }
+    });
+</script>
+{% endblock %} 

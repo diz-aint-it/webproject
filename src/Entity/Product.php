@@ -44,9 +44,9 @@ class Product
     #[Assert\Positive]
     private ?int $publicationYear = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "book_condition", length: 255)]
     #[Assert\NotBlank]
-    private ?string $condition = null;
+    private ?string $bookCondition = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -59,9 +59,16 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderItem::class)]
     private Collection $orderItems;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'alertedProducts')]
+    private Collection $alertSubscribers;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->alertSubscribers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,14 +153,14 @@ class Product
         return $this;
     }
 
-    public function getCondition(): ?string
+    public function getBookCondition(): ?string
     {
-        return $this->condition;
+        return $this->bookCondition;
     }
 
-    public function setCondition(string $condition): static
+    public function setBookCondition(string $bookCondition): static
     {
-        $this->condition = $condition;
+        $this->bookCondition = $bookCondition;
         return $this;
     }
 
@@ -203,6 +210,25 @@ class Product
                 $orderItem->setProduct(null);
             }
         }
+        return $this;
+    }
+
+    public function getAlertSubscribers(): Collection
+    {
+        return $this->alertSubscribers;
+    }
+
+    public function addAlertSubscriber(User $user): static
+    {
+        if (!$this->alertSubscribers->contains($user)) {
+            $this->alertSubscribers[] = $user;
+        }
+        return $this;
+    }
+
+    public function removeAlertSubscriber(User $user): static
+    {
+        $this->alertSubscribers->removeElement($user);
         return $this;
     }
 } 

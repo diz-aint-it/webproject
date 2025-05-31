@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Order #{{ order.id }}</h1>
+    <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>User:</strong> {{ order.user.fullName }}</li>
+        <li class="list-group-item"><strong>Date:</strong> {{ order.orderDate|date('Y-m-d H:i') }}</li>
+        <li class="list-group-item"><strong>Status:</strong> {{ order.status }}</li>
+        <li class="list-group-item"><strong>Total:</strong> {{ order.total|number_format(2) }}</li>
+        <li class="list-group-item"><strong>Shipping Address:</strong> {{ order.shippingAddress }}, {{ order.shippingCity }}, {{ order.shippingPostalCode }}, {{ order.shippingCountry }}</li>
+    </ul>
+    <h2>Order Items</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.orderItems %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price|number_format(2) }}</td>
+                    <td>{{ (item.quantity * item.price)|number_format(2) }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">No items found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

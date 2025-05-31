@@ -16,18 +16,26 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('shippingName', TextType::class, [
-                'label' => 'Full Name',
-                'attr' => ['placeholder' => 'Enter your full name']
-            ])
-            ->add('shippingEmail', EmailType::class, [
-                'label' => 'Email Address',
-                'attr' => ['placeholder' => 'Enter your email address']
-            ])
-            ->add('shippingPhone', TelType::class, [
-                'label' => 'Phone Number',
-                'attr' => ['placeholder' => 'Enter your phone number']
-            ])
+            // ->add('shippingName', TextType::class, [
+            //     'label' => 'Shipping Name',
+            //     'required' => true,
+            // ])
+            // ->add('shippingEmail', EmailType::class, [
+            //     'label' => 'Shipping Email',
+            //     'required' => true,
+            // ])
+            // ->add('shippingPhone', TextType::class, [
+            //     'label' => 'Shipping Phone',
+            //     'required' => true,
+            // ])
+            // ->add('shippingState', TextType::class, [
+            //     'label' => 'Shipping State',
+            //     'required' => false,
+            // ])
+            // ->add('notes', TextareaType::class, [
+            //     'label' => 'Notes',
+            //     'required' => false,
+            // ])
             ->add('shippingAddress', TextareaType::class, [
                 'label' => 'Shipping Address',
                 'attr' => [
@@ -35,30 +43,22 @@ class OrderType extends AbstractType
                     'rows' => 3
                 ]
             ])
-            ->add('shippingCity', TextType::class, [
-                'label' => 'City',
-                'attr' => ['placeholder' => 'Enter your city']
-            ])
-            ->add('shippingState', TextType::class, [
-                'label' => 'State/Province',
-                'attr' => ['placeholder' => 'Enter your state or province']
-            ])
-            ->add('shippingPostalCode', TextType::class, [
-                'label' => 'Postal Code',
-                'attr' => ['placeholder' => 'Enter your postal code']
-            ])
-            ->add('shippingCountry', TextType::class, [
-                'label' => 'Country',
-                'attr' => ['placeholder' => 'Enter your country']
-            ])
-            ->add('notes', TextareaType::class, [
-                'label' => 'Order Notes (Optional)',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Add any special instructions or notes for your order',
-                    'rows' => 3
-                ]
-            ])
+            // ->add('shippingCity', TextType::class, [
+            //     'label' => 'City',
+            //     'attr' => ['placeholder' => 'Enter your city']
+            // ])
+            // ->add('shippingState', TextType::class, [
+            //     'label' => 'State/Province',
+            //     'attr' => ['placeholder' => 'Enter your state or province']
+            // ])
+            // ->add('shippingPostalCode', TextType::class, [
+            //     'label' => 'Postal Code',
+            //     'attr' => ['placeholder' => 'Enter your postal code']
+            // ])
+            // ->add('shippingCountry', TextType::class, [
+            //     'label' => 'Country',
+            //     'attr' => ['placeholder' => 'Enter your country']
+            // ])
         ;
     }
 

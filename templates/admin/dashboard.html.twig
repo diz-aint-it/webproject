@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text display-4">{{ userCount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text display-4">{{ productCount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Orders</h5>
+                    <p class="card-text display-4">{{ orderCount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>Recent Orders</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recentOrders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.user.fullName }}</td>
+                    <td>{{ order.orderDate|date('Y-m-d H:i') }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.total|number_format(2) }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">No recent orders.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 
